@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "C/C++: g++.exe build active file",
+      "command": "g++",
+      "args": [
+        "-g",
+        "-std=c++17",
+        "-I./include",
+        "-L./lib",
+        "src/\\*.cpp",
+        "src/glad.c",
+        "-lglfw3dll",
+        "-o",
+        "./test.exe"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": ["$gcc"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "type": "shell",
+      "label": "run",
+      "command": "start test.exe"
+    }
+  ]
+}
