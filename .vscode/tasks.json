@@ -10,8 +10,10 @@
         "-std=c++17",
         "-I./include",
         "-L./lib",
-        "src/\\*.cpp",
+        "src/main.cpp",
         "src/glad.c",
+        "src/setup/program_setup.cpp",
+        "src/core/render_loop.cpp",
         "-lglfw3dll",
         "-o",
         "./test.exe"
