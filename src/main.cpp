@@ -1,8 +1,6 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include "setup/program_setup.h"
-#include <iostream>
+#include "common.h"
 #include "core/render_loop.h"
+#include "setup/program_setup.h"
 
 // settings
 unsigned int SCR_WIDTH = 800;
@@ -15,15 +13,11 @@ GLFWwindow *currentWindow;
 int main()
 {
 	glfwInit();
+	glewInit();
+	
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 
-	currentWindow = CreateWindow(SCR_WIDTH, SCR_WIDTH);
-
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout << "Failed to initialize GLAD" << std::endl;
-		return -1;
-	}
+	currentWindow = CreateGLWindow(SCR_WIDTH, SCR_WIDTH);
 
 	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 

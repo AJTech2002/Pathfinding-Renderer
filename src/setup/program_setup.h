@@ -1,4 +1,3 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "../common.h"
 
-GLFWwindow *CreateWindow(unsigned  int &width, unsigned  int &height);
+GLFWwindow *CreateGLWindow(unsigned  int &width, unsigned  int &height);

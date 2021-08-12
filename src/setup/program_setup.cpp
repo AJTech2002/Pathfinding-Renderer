@@ -1,7 +1,7 @@
 #include "program_setup.h"
 #include <iostream>
 
-GLFWwindow* CreateWindow (unsigned  int& width, unsigned int& height)
+GLFWwindow* CreateGLWindow (unsigned  int& width, unsigned int& height)
 {
     GLFWwindow *window = glfwCreateWindow(width, height, "Pathfinding Renderer", NULL, NULL);
     
