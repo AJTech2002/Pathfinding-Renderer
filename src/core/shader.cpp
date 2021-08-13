@@ -3,8 +3,16 @@
 //Load files
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
 {
-    const char * vertexShader = readFile(vertexPath);
-    const char * fragmentShader = readFile(vertexPath);
+    std::string vertexString;
+    std::string fragmentString;
+
+    readFile(vertexPath,vertexString);
+    readFile(fragmentPath, fragmentString);
+
+    const char *vertexShader = vertexString.c_str();
+    const char *fragmentShader = fragmentString.c_str();
+
+    std::cout << vertexShader << "\n";
 
     if (vertexShader != "" && fragmentShader != "")
     {
@@ -38,6 +46,8 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 
         ID = glCreateProgram();
 
+        std::cout << "Linked Shader Program " << ID << "\n";
+
         glAttachShader(ID, vertex);
         glAttachShader(ID, fragment);
 
@@ -70,7 +80,13 @@ void Shader::setFloat(const std::string &name, float value) const
     glUniform1f(glGetUniformLocation(ID, name.c_str()), value); 
 } 
 
-const char * Shader::readFile (const char* path)
+void Shader::setMat4 (const std::string &name, glm::mat4 transform) const
+{
+    glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(transform));
+
+}
+
+int Shader::readFile (const char* path, std::string &output)
 {
     std::ifstream file;
 
@@ -79,13 +95,17 @@ const char * Shader::readFile (const char* path)
     try {
         file.open(path);
         std::stringstream fileStream;
+        
         fileStream << file.rdbuf();
         file.close();
 
-        return fileStream.str().c_str();
+        output = fileStream.str();
+
+
+        return 0;
     }
     catch (std::ifstream::failure e)
     {
-        return "-";
+        return 1;
     }
 }

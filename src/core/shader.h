@@ -19,8 +19,9 @@ class Shader
         //const evaluated
         void setBool(const std::string &name, bool value) const;
         void setFloat(const std::string &name, float value) const;
+        void setMat4(const std::string &name, glm::mat4 matrix) const;
 
-        const char * readFile(const char *path);
+        int readFile (const char* path, std::string &output);
 };
 
 #endif
