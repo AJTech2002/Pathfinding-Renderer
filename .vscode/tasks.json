@@ -15,6 +15,7 @@
         "src/setup/program_setup.cpp",
         "src/core/mesh.cpp",
         "src/core/render_loop.cpp",
+        "src/core/shader.cpp",
         "-lmingw32",
         "-lopengl32",
         "-lglew32",

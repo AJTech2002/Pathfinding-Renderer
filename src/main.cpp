@@ -12,20 +12,22 @@ GLFWwindow *currentWindow;
 
 int main()
 {
-	glfwInit();
-	glewInit();
-	
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  
+  glfwInit();
+    
 
-	currentWindow = CreateGLWindow(SCR_WIDTH, SCR_WIDTH);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 
-	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+  currentWindow = CreateGLWindow(SCR_WIDTH, SCR_WIDTH);
 
-	glfwSetFramebufferSizeCallback(currentWindow, framebuffer_size_callback);
+  glewInit();
 
-	renderLoop(currentWindow);
+  glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
-	return 0;
+  glfwSetFramebufferSizeCallback(currentWindow, framebuffer_size_callback);
+
+  renderLoop(currentWindow);
+
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)

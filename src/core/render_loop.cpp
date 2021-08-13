@@ -1,7 +1,12 @@
 #include "render_loop.h"
+#include "mesh.h"
 
 void renderLoop(GLFWwindow* window)
 {
+
+    Shader shader ("src/shaders/vertex.glsl","src/shaders/fragment.glsl");
+    Mesh mesh(&shader);
+
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
@@ -11,6 +16,9 @@ void renderLoop(GLFWwindow* window)
         glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        mesh.draw();
+
+        mesh.vertices[0] -= 0.001;
 
         glfwSwapBuffers(window);
         glfwPollEvents();
