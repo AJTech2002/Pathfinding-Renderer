@@ -16,6 +16,7 @@
         "src/core/mesh.cpp",
         "src/core/render_loop.cpp",
         "src/core/shader.cpp",
+        "src/core/camera.cpp",
         "-lmingw32",
         "-lopengl32",
         "-lglew32",

@@ -65,6 +65,13 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     }
 }
 
+void Shader::MVP (glm::mat4 model, glm::mat4 view, glm::mat4 projection)
+{
+    setMat4("model", model);
+    setMat4("view", view);
+    setMat4("projection", projection);
+}
+
 void Shader::use ()
 {
     glUseProgram(ID);
@@ -78,7 +85,12 @@ void Shader::setBool(const std::string &name, bool value) const
 void Shader::setFloat(const std::string &name, float value) const
 { 
     glUniform1f(glGetUniformLocation(ID, name.c_str()), value); 
-} 
+}
+
+void Shader::setVec3 (const std::string &name, glm::vec3 value) const
+{
+    glUniform3f(glGetUniformLocation(ID, name.c_str()), value.x, value.y, value.z);
+}
 
 void Shader::setMat4 (const std::string &name, glm::mat4 transform) const
 {
