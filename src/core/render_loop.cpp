@@ -1,6 +1,7 @@
 #include "render_loop.h"
 #include "mesh.h"
 #include "camera.h"
+#include "light.h"
 
 void renderLoop(GLFWwindow* window)
 {
@@ -8,11 +9,18 @@ void renderLoop(GLFWwindow* window)
     Shader shader ("C:/Users/Ajay/Desktop/Pathfinding-Renderer/src/shaders/vertex.glsl","C:/Users/Ajay/Desktop/Pathfinding-Renderer/src/shaders/fragment.glsl");
     Mesh mesh(&shader);
 
+    Light directionalLight;
+
     mesh.tint = glm::vec3(129.0f/256.0f, 242.0f/256.0f, 107.0f/256.0f);
 
     Mesh mesh2(&shader);
 
     mesh2.tint = glm::vec3(107.0/256.0f, 190.0/256.0f, 242.0/256.0f);
+
+    Mesh lightMesh(&shader);
+    lightMesh.model = glm::mat4(1.0f);
+    lightMesh.model = glm::translate(lightMesh.model, directionalLight.position);
+    lightMesh.model = glm::scale(lightMesh.model, glm::vec3(0.2f, 0.2f, 0.2f));
 
     VCamera camera;
 
@@ -26,8 +34,10 @@ void renderLoop(GLFWwindow* window)
         glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        //Rendering Logic
-        camera.cameraPos = glm::vec3(glm::sin(glfwGetTime())*3.0f,0.0f, -3.0f);
+        //Apply lighting to the global shader (doesn't have to be done for each object as global)
+        directionalLight.applyLightingUniforms(&shader, &camera);
+
+        camera.cameraPos = glm::vec3(glm::sin(glfwGetTime()*0.5f)*10.0f,0.0f, -3.0f);
         mesh.model = glm::mat4(1.0f);
         mesh.model = glm::rotate(mesh.model,(float)glfwGetTime(), glm::vec3(1.0f, 0.0f, 0.0f));
 
@@ -37,6 +47,8 @@ void renderLoop(GLFWwindow* window)
 
         mesh.draw(&camera);
         mesh2.draw(&camera);
+
+        lightMesh.draw(&camera);
 
         //Swap Buffers
         glfwSwapBuffers(window);

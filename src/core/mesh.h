@@ -12,7 +12,8 @@ class Mesh
 
     public:
         glm::vec3 tint = glm::vec3(1.0f); //Todo: move to material object
-
+        
+        //Abstract the position out from the Model, Light & Camera to be a GO
         glm::mat4 model = glm::mat4(1.0f);
 
         void draw(VCamera* sceneCamera);

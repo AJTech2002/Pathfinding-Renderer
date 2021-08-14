@@ -17,6 +17,7 @@
         "src/core/render_loop.cpp",
         "src/core/shader.cpp",
         "src/core/camera.cpp",
+        "src/core/light.cpp",
         "-lmingw32",
         "-lopengl32",
         "-lglew32",
