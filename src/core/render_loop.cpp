@@ -22,6 +22,8 @@ void renderLoop(GLFWwindow* window)
     lightMesh.model = glm::translate(lightMesh.model, directionalLight.position);
     lightMesh.model = glm::scale(lightMesh.model, glm::vec3(0.2f, 0.2f, 0.2f));
 
+    lightMesh.tint = glm::vec3(1.0f, 1.0f, 1.0f);
+
     VCamera camera;
 
     glEnable(GL_DEPTH_TEST);
@@ -36,6 +38,12 @@ void renderLoop(GLFWwindow* window)
         
         //Apply lighting to the global shader (doesn't have to be done for each object as global)
         directionalLight.applyLightingUniforms(&shader, &camera);
+        
+        directionalLight.position = glm::vec3(glm::sin(glfwGetTime()*0.5f)*2.0f,glm::cos(glfwGetTime()*0.5f)*2.0f, 1.5f);
+
+        lightMesh.model = glm::mat4(1.0f);
+        lightMesh.model = glm::translate(lightMesh.model, directionalLight.position);
+        lightMesh.model = glm::scale(lightMesh.model, glm::vec3(0.2f, 0.2f, 0.2f));
 
         camera.cameraPos = glm::vec3(glm::sin(glfwGetTime()*0.5f)*10.0f,0.0f, -3.0f);
         mesh.model = glm::mat4(1.0f);
