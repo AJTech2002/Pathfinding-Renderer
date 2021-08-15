@@ -14,11 +14,11 @@ class Model
             linkedShader = meshShader;
             loadModel(path);
         }
-        
+        std::vector<Mesh> meshes;
         void draw(VCamera *cam);
         
     private:
-        std::vector<Mesh> meshes;
+        
         std::string directory;
         Shader *linkedShader;
         void loadModel(std::string path);

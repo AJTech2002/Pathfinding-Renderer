@@ -10,7 +10,7 @@ void renderLoop(GLFWwindow* window)
     // Mesh mesh(&shader, finalCubeVerts, finalCubeIndices);
 
     Model capsuleModel("C:/Users/Ajay/Desktop/Pathfinding-Renderer/primitives/CapsuleSmooth.fbx",&shader);
-
+    capsuleModel.meshes[0].tint = glm::vec3(107.0 / 256.0f, 190.0 / 256.0f, 242.0 / 256.0f);
     Light directionalLight;
 
     // mesh.tint = glm::vec3(129.0f/256.0f, 242.0f/256.0f, 107.0f/256.0f);
@@ -27,6 +27,8 @@ void renderLoop(GLFWwindow* window)
     // lightMesh.tint = glm::vec3(1.0f, 1.0f, 1.0f);
 
     VCamera camera;
+
+    std::cout << "Test Output \n";
 
     glEnable(GL_DEPTH_TEST);
 
