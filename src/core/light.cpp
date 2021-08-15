@@ -3,7 +3,7 @@
 Light::Light() {
     direction = glm::vec3(1.2f, 1.0f, 2.0f);
     position = glm::vec3(2.0f, 2.0f, 1.5f);
-    ambient = glm::vec3(0.2f, 0.2f, 0.2f);
+    ambient = glm::vec3(0.4f, 0.4f, 0.4f);
 }
 
 void Light::applyLightingUniforms (Shader* shader, VCamera* camera)
