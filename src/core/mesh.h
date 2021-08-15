@@ -1,3 +1,5 @@
+#ifndef MESH
+#define MESH
 #include "../common.h"
 #include "shader.h"
 #include "camera.h"
@@ -23,3 +25,4 @@ class Mesh
         Mesh(Shader *meshShader, std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 };
 
+#endif
