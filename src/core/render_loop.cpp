@@ -1,18 +1,18 @@
 #include "render_loop.h"
 #include "mesh.h"
-#include "camera.h"
-#include "light.h"
+
 #include "model.h"
 void renderLoop(GLFWwindow* window)
 {
 
     Shader shader("C:/Users/Ajay/Desktop/Pathfinding-Renderer/src/shaders/vertex.glsl", "C:/Users/Ajay/Desktop/Pathfinding-Renderer/src/shaders/fragment.glsl");
     // Mesh mesh(&shader, finalCubeVerts, finalCubeIndices);
-
+    Scene scene;
     Model capsuleModel("C:/Users/Ajay/Desktop/Pathfinding-Renderer/primitives/CapsuleSmooth.fbx",&shader);
     capsuleModel.meshes[0].tint = glm::vec3(107.0 / 256.0f, 190.0 / 256.0f, 242.0 / 256.0f);
     Light directionalLight;
 
+    scene.addSceneObject(&capsuleModel);
     // mesh.tint = glm::vec3(129.0f/256.0f, 242.0f/256.0f, 107.0f/256.0f);
 
     // Mesh mesh2(&shader, finalCubeVerts, finalCubeIndices);
@@ -34,7 +34,7 @@ void renderLoop(GLFWwindow* window)
 
     while (!glfwWindowShouldClose(window))
     {
-        processInput(window);
+        processInput(window, &scene, &camera);
         
         // Rendering
         glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
@@ -74,8 +74,22 @@ void renderLoop(GLFWwindow* window)
     return;
 }
 
-void processInput(GLFWwindow *window)
+void processInput(GLFWwindow *window, Scene* scene, VCamera* camera)
 {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT))
+    {
+        double xpos, ypos;
+       //getting cursor position
+       glfwGetCursorPos(window, &xpos, &ypos);
+       std::cout << "Cursor Position at (" << xpos << " : " << ypos << std::endl;
+       Ray ray = scene->rayFromSceneCamera(*camera, glm::vec2((float)xpos, (float)ypos), glm::vec2(800.0f, 600.0));
+
+       std::cout << "ORIGIN at ( " << ray.origin.x << "," << ray.origin.y << "," << ray.origin.z << " ) " << std::endl;
+       std::cout << "DIR at ( " << ray.dir.x << "," << ray.dir.y << "," << ray.dir.z << " ) " << std::endl;
+
+       scene->intersectRay(ray);
+    }
 }

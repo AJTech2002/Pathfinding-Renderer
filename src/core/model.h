@@ -16,6 +16,7 @@ class Model
         }
         std::vector<Mesh> meshes;
         void draw(VCamera *cam);
+        bool didIntersectAnyMeshes(Ray &ray);
         
     private:
         
@@ -23,6 +24,7 @@ class Model
         Shader *linkedShader;
         void loadModel(std::string path);
         void processNode(aiNode *node, const aiScene *scene);
+        
         Mesh processMesh(aiMesh *mesh, const aiScene *scene);
 
 };

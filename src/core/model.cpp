@@ -6,6 +6,16 @@ void Model::draw(VCamera *cam)
         meshes[i].draw(cam);
 }
 
+bool Model::didIntersectAnyMeshes(Ray &ray)
+{
+
+    for (int i = 0; i < meshes.size(); i++)
+        if (meshes[i].rayDoesIntersect(ray))
+            return true;
+
+    return false;
+}
+
 //Reason for nodes is to keep parent child relationships (not just get the meshes)
 void Model::loadModel (std::string path)
 {
