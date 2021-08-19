@@ -46,17 +46,46 @@ void Mesh::draw(VCamera* sceneCamera)
 {
     //Set Uniforms for this mesh before the draw
     if (linkedShader != nullptr) {
+
+        linkedShader->use();
         linkedShader->setVec3("tint", tint);
         linkedShader->MVP(model, (*sceneCamera->getViewMatrix()), sceneCamera->projection);
-        linkedShader->use();
+        
     }
-
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBindVertexArray(VAO);
     
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     // glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
+void Mesh::drawLine (glm::vec3 start, glm::vec3 end, VCamera *sceneCamera)
+{
+    if (linkedShader != nullptr) {
+
+        linkedShader->use();
+        linkedShader->setVec3("tint", tint);
+        linkedShader->MVP(model, (*sceneCamera->getViewMatrix()), sceneCamera->projection);
+        
+    }
+
+    vertices = std::vector<Vertex>();
+    Vertex a;
+    a.Position = start;
+    Vertex b;
+    b.Position = end;
+    vertices.push_back(a);
+    vertices.push_back(b);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    //&vertices[0] is a reference to the first element (an array)
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*vertices.size(), &vertices[0], GL_STATIC_DRAW);
+
+    glBindVertexArray(VAO);
+    
+    // glDrawElements(GL_LINES, indices.size(), GL_UNSIGNED_INT, 0);
+    glDrawArrays(GL_LINES, 0, 2);
+}
 
 bool Mesh::rayDoesIntersect(Ray &ray)
 {

@@ -20,6 +20,7 @@ class Mesh
         );
 
     public:
+        GLenum mode = GL_TRIANGLES;
         glm::vec3 tint = glm::vec3(1.0f); //Todo: move to material object
         glm::mat4 model = glm::mat4(1.0f);
         std::vector<Vertex> vertices;
@@ -29,6 +30,8 @@ class Mesh
 
         void draw(VCamera* sceneCamera);
         void init();
+
+        void drawLine(glm::vec3 start, glm::vec3 end, VCamera *sceneCamera);
 
         Mesh(Shader *meshShader, std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 };
