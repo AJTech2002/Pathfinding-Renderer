@@ -16,7 +16,9 @@ class Mesh
         Shader *linkedShader;
         bool doesIntersectTriangle(Vertex *v1, Vertex *v2, Vertex *v3, Ray &ray);
         bool TestRayOBBIntersection(
-           const Ray &r
+           const Ray &r,
+           glm::vec3 boxMin, 
+           glm::vec3 boxMax
         );
 
     public:

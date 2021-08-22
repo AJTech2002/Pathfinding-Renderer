@@ -13,7 +13,7 @@ void renderLoop(GLFWwindow* window)
     Shader lineShader("C:/Users/Ajay/Desktop/Pathfinding-Renderer/src/shaders/lineVertex.glsl", "C:/Users/Ajay/Desktop/Pathfinding-Renderer/src/shaders/lineFragment.glsl");
  
     Scene scene;
-    Model capsuleModel("C:/Users/Ajay/Desktop/Pathfinding-Renderer/primitives/CapsuleSmooth.fbx",&shader);
+    Model capsuleModel("C:/Users/Ajay/Desktop/Pathfinding-Renderer/primitives/Cube.fbx",&shader);
     capsuleModel.meshes[0].tint = glm::vec3(107.0 / 256.0f, 190.0 / 256.0f, 242.0 / 256.0f);
     Light directionalLight;
 

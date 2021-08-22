@@ -37,9 +37,59 @@ void Mesh::init()
 }
 
 bool Mesh::TestRayOBBIntersection(
-	const Ray &r
+	const Ray &r, //Ray into Object
+    glm::vec3 min, //Object
+    glm::vec3 max //Object
 ){
-    return false;
+
+    float tmin = (min.x - r.origin.x) / r.dir.x; 
+    float tmax = (max.x - r.origin.x) / r.dir.x; 
+ 
+    if (tmin > tmax) {
+        float temp = tmin;
+        tmin = tmax;
+        tmax = temp;
+    }
+ 
+    float tymin = (min.y - r.origin.y) / r.dir.y; 
+    float tymax = (max.y - r.origin.y) / r.dir.y; 
+ 
+    if (tymin > tymax)
+    {
+        float temp = tymin;
+        tymin = tymax;
+        tymax = temp;
+    }
+ 
+    if ((tmin > tymax) || (tymin > tmax)) 
+        return false; 
+ 
+    if (tymin > tmin) 
+        tmin = tymin; 
+ 
+    if (tymax < tmax) 
+        tmax = tymax; 
+ 
+    float tzmin = (min.z - r.origin.z) / r.dir.z; 
+    float tzmax = (max.z - r.origin.z) / r.dir.z; 
+ 
+    if (tzmin > tzmax) 
+    {
+        float temp = tzmin;
+        tzmin = tzmax;
+        tzmax = temp;
+    }
+ 
+    if ((tmin > tzmax) || (tzmin > tmax)) 
+        return false; 
+ 
+    if (tzmin > tmin) 
+        tmin = tzmin; 
+ 
+    if (tzmax < tmax) 
+        tmax = tzmax; 
+ 
+    return true; 
 }
 
 void Mesh::draw(VCamera* sceneCamera)
@@ -89,17 +139,33 @@ void Mesh::drawLine (glm::vec3 start, glm::vec3 end, VCamera *sceneCamera)
 
 bool Mesh::rayDoesIntersect(Ray &ray)
 {
-    for(int i=0; i<100; i++){
+    float intersection_distance; // Output of TestRayOBBIntersection()
+    glm::vec3 aabb_min(-1.0f, -1.0f, -1.0f); //Need to update
+    glm::vec3 aabb_max( 1.0f,  1.0f,  1.0f); //Need to update
 
-        float intersection_distance; // Output of TestRayOBBIntersection()
-        glm::vec3 aabb_min(-1.0f, -1.0f, -1.0f); //Need to update
-        glm::vec3 aabb_max( 1.0f,  1.0f,  1.0f); //Need to update
+    aabb_min = vertices[0].Position;
+    aabb_max = vertices[0].Position;
 
-        if ( TestRayOBBIntersection(ray))
-        {
-            std::cout << "INTERSECT" << std::endl;
-            return true;
-        }
+    //Should just be done once
+    for (int i = 0; i < vertices.size(); i++)
+    {
+        glm::vec3 pos = vertices[i].Position;
+        aabb_min = glm::vec3(glm::min(pos.x, aabb_min.x), glm::min(pos.y, aabb_min.y), glm::min(pos.z, aabb_min.z));
+        aabb_max = glm::vec3(glm::max(pos.x, aabb_max.x), glm::max(pos.y, aabb_max.y), glm::max(pos.z, aabb_max.z));
     }
-    return false;
+
+    ray.origin = glm::vec3(glm::inverse(model) * glm::vec4(ray.origin, 1.0f));
+    ray.dir = glm::normalize(glm::vec3(glm::inverse(model) * glm::vec4(ray.dir, 0.0f)));
+
+    if (TestRayOBBIntersection(ray, aabb_min, aabb_max))
+    {
+        std::cout << "INTERSECT\n"
+                    << std::endl;
+        return true;
+    }
+    else
+    {
+        std::cout << aabb_min.x << "," << aabb_min.y << "," << aabb_min.z << " || " << aabb_max.x << "," << aabb_max.y << "," << aabb_max.z << std::endl;
+        return false;
+    }
 }
