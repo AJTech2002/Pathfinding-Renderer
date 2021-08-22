@@ -17,11 +17,12 @@ class Model
         std::vector<Mesh> meshes;
         void draw(VCamera *cam);
         bool didIntersectAnyMeshes(Ray &ray);
+        Shader *linkedShader;
         
     private:
         
         std::string directory;
-        Shader *linkedShader;
+        
         void loadModel(std::string path);
         void processNode(aiNode *node, const aiScene *scene);
         
