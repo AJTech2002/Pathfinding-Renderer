@@ -4,7 +4,7 @@
 
 // settings
 unsigned int SCR_WIDTH = 800;
-unsigned int SCR_HEIGHT = 600;
+unsigned int SCR_HEIGHT = 800;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
@@ -25,6 +25,8 @@ int main()
   glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
   glfwSetFramebufferSizeCallback(currentWindow, framebuffer_size_callback);
+
+  glfwSetInputMode(currentWindow, GLFW_CURSOR, GLFW_VISIBLE);
 
   renderLoop(currentWindow);
 

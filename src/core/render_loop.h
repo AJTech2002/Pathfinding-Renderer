@@ -5,3 +5,4 @@
 
 void renderLoop(GLFWwindow* window);
 void processInput(GLFWwindow *window, Scene *scene, VCamera *camera);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
