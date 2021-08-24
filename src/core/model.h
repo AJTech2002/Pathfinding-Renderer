@@ -16,7 +16,7 @@ class Model
         }
         std::vector<Mesh> meshes;
         void draw(VCamera *cam);
-        bool didIntersectAnyMeshes(Ray &ray);
+        bool didIntersectAnyMeshes(Ray &ray, RayHit &hit);
         Shader *linkedShader;
         
     private:

@@ -5,13 +5,13 @@ void Scene::addSceneObject (Model model)
     sceneObjects.push_back(model);
 }
 
-Model* Scene::intersectRay (Ray &ray)
+Model* Scene::intersectRay (Ray &ray, RayHit &hit)
 {
     Model *returnModel = nullptr;
 
     for (int i = 0; i < sceneObjects.size(); i++)
     {
-        if (sceneObjects[i].didIntersectAnyMeshes(ray))
+        if (sceneObjects[i].didIntersectAnyMeshes(ray, hit))
             return &sceneObjects[i]; //Returns the first (but not in Z depth)
     }
 
@@ -62,7 +62,7 @@ Ray Scene::rayFromSceneCamera (VCamera &camera, glm::vec2 screenPosition, glm::v
     screenToWorld(camera, screenPosition, 1.0f, -1.0f, screenSize, &tempPoint);
 
     testRay.dir = tempPoint;
-
+    testRay.maxDist = 100; //Max Distance (will be used for resolution of hit point)
     testRay.origin = camera.cameraPos;
 
     return testRay;

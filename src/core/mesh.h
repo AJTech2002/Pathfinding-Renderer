@@ -28,7 +28,7 @@ class Mesh
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
 
-        bool rayDoesIntersect(Ray &ray);
+        bool rayDoesIntersect(Ray &ray, RayHit& hit);
 
         void draw(VCamera* sceneCamera);
         void init();

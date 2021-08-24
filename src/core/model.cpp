@@ -6,11 +6,11 @@ void Model::draw(VCamera *cam)
         meshes[i].draw(cam);
 }
 
-bool Model::didIntersectAnyMeshes(Ray &ray)
+bool Model::didIntersectAnyMeshes(Ray &ray, RayHit &hit)
 {
 
     for (int i = 0; i < meshes.size(); i++)
-        if (meshes[i].rayDoesIntersect(ray))
+        if (meshes[i].rayDoesIntersect(ray, hit))
             return true;
 
     return false;

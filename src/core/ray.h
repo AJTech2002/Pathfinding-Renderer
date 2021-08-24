@@ -10,4 +10,9 @@ struct Ray
     float maxDist;
 };
 
+struct RayHit
+{
+    glm::vec3 hitPoint;
+};
+
 #endif

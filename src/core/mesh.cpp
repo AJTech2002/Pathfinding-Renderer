@@ -36,6 +36,15 @@ void Mesh::init()
     glEnableVertexAttribArray(1);
 }
 
+static bool PointInOBB (glm::vec3 p, glm::vec3 min, glm::vec3 max)
+{
+    if( min.x <= p.x && p.x <= max.x && min.y <= p.y && p.y <= max.y && min.z <= p.z && p.z <= max.z ) {
+        return true;
+    }
+
+    return false;
+}
+
 bool Mesh::TestRayOBBIntersection(
 	const Ray &r, //Ray into Object
     glm::vec3 min, //Object
@@ -92,6 +101,64 @@ bool Mesh::TestRayOBBIntersection(
     return true; 
 }
 
+bool linePlaneIntersection(glm::vec3& contact, glm::vec3 ray, glm::vec3 rayOrigin, 
+                           glm::vec3 normal, glm::vec3 coord) {
+    float d = glm::dot(normal, coord);
+    
+    if (glm::dot(normal, ray) == 0) {
+        return false;
+    }
+
+    float x = (d - glm::dot(normal, rayOrigin)) / glm::dot(normal, ray);
+    
+    contact = rayOrigin + glm::normalize(ray)*x;
+    return true;
+}
+
+int compareVec3 (glm::vec3& a, glm::vec3& b)
+{
+    if (a.x < b.x || a.y < b.y || a.z < b.z)
+        return -1;
+
+    return 1;
+}
+
+static bool binarySearchRay (glm::vec3 start, glm::vec3 end, glm::vec3 min, glm::vec3 max, std::vector<glm::vec3>& contactPoints, int depth, int maxDepth)
+{
+    glm::vec3 mid = (start + end) / 2.0f;
+
+    if (depth > maxDepth) {
+        std::cout << "Appending Point " << std::endl;
+        contactPoints.push_back(mid);
+        return true;
+    }
+ 
+
+    if (compareVec3(mid, min) == 1 && compareVec3(mid, max) == -1) 
+    {
+        binarySearchRay(start, mid, min, max, contactPoints, depth + 1, maxDepth);
+        binarySearchRay(mid, end, min, max, contactPoints, depth + 1, maxDepth);
+        return true;
+    }
+
+    if (compareVec3(mid, min) == -1  && compareVec3(mid, max) == -1)
+    {
+        binarySearchRay(mid, end, min, max, contactPoints, depth + 1, maxDepth);
+        return true;
+    }
+
+    if (compareVec3(mid, max) == 1 && compareVec3(mid, min) == 1) 
+    {
+        binarySearchRay(start, mid, min, max, contactPoints, depth + 1, maxDepth);
+        return true;
+    }
+
+
+
+
+    return false;
+}
+
 void Mesh::draw(VCamera* sceneCamera)
 {
     //Set Uniforms for this mesh before the draw
@@ -137,7 +204,7 @@ void Mesh::drawLine (glm::vec3 start, glm::vec3 end, VCamera *sceneCamera)
     glDrawArrays(GL_LINES, 0, 2);
 }
 
-bool Mesh::rayDoesIntersect(Ray &ray)
+bool Mesh::rayDoesIntersect(Ray &ray, RayHit& hit)
 {
     float intersection_distance; // Output of TestRayOBBIntersection()
     glm::vec3 aabb_min(-1.0f, -1.0f, -1.0f); //Need to update
@@ -159,8 +226,22 @@ bool Mesh::rayDoesIntersect(Ray &ray)
 
     if (TestRayOBBIntersection(ray, aabb_min, aabb_max))
     {
-        std::cout << "INTERSECT\n"
+        std::cout << "Found Intersection with Box\n"
                     << std::endl;
+        
+        // Very innacurate and slow (but this program doesn't need complex picking )
+        for (int i = 0; i < 100; i ++)
+        {
+            glm::vec3 testPoint = ray.origin + ray.dir * ray.maxDist * (float)i/100.0f;
+            
+            if (PointInOBB(testPoint, aabb_min, aabb_max))
+            {
+                hit.hitPoint = glm::vec3(testPoint.x, testPoint.y, testPoint.z)-ray.dir*0.5f;
+                // std::cout    << "Found Intersection Distance : " << (float)i << std::endl;
+                break;
+            }
+        }
+
         return true;
     }
     else
