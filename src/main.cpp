@@ -1,6 +1,6 @@
 #include "common.h"
-#include "core/render_loop.h"
 #include "setup/program_setup.h"
+#include  "render.h"
 
 // settings
 unsigned int SCR_WIDTH = 800;
@@ -28,8 +28,7 @@ int main()
 
   glfwSetInputMode(currentWindow, GLFW_CURSOR, GLFW_VISIBLE);
 
-  renderLoop(currentWindow);
-
+  render_window(currentWindow);
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
